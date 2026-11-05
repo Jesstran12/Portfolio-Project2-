@@ -26,6 +26,9 @@ LINES = {
     "Capital spending":    ("flow",    ["PaymentsToAcquirePropertyPlantAndEquipment",
                                         "PaymentsToAcquireProductiveAssets"]),
     "Equity":              ("instant", ["StockholdersEquity"]),
+    # Lab 19: shared with the Cathie Wood and Burry skills
+    "Liabilities":         ("instant", ["Liabilities"]),
+    "R&D":                 ("flow",    ["ResearchAndDevelopmentExpense"]),
 }
 MIN_ROE = 15.0  # percent, every year
 # ---------------------------------------------------------------- end of inputs
