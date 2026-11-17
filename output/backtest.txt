@@ -1,0 +1,6 @@
+$ python3 backtest.py
+Lag 1 month(s), cost 0.10% a switch, bills 0.30% a month
+Period        Rule gross  Rule net  Buy-and-hold  Switches
+Development         6.55      6.13          5.33         4
+Holdout            -5.52     -6.09         -2.09         6
+Failure rule (stop if holdout net trails buy-and-hold): TRIGGERED (4.00 points)

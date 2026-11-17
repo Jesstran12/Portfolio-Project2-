@@ -1,6 +1,6 @@
 """Lab 15 - lowest-risk mix that meets the mandate, Meridian or my own funds.
 
-Every calculation is imported from portfolio.py; this file only handles the page.
+Every calculation is imported from portfolio.py and backtest.py; this file only handles the page.
 Run: python3 -m streamlit run app.py
 """
 import csv
@@ -8,7 +8,10 @@ import io
 
 import streamlit as st
 
+import backtest as bt
 import portfolio as p
+
+RESERVE_TICKERS = {"BIL", "IEF"}  # cash and Treasuries count toward the reserve minimum (mandate S3)
 
 st.set_page_config(page_title="Lowest-risk mix", layout="wide")
 st.title("Lowest-risk mix that meets the mandate")
@@ -22,6 +25,11 @@ with st.sidebar:
     upload = st.file_uploader("prices.csv (date, then one column per ticker, oldest first)",
                               type="csv")
     last_36 = st.toggle("Last 36 months only", value=False, disabled=upload is None)
+    st.markdown("**Signal backtest (sensitivity only)**")
+    lag = st.select_slider("Signal lag (months)", options=[0, 1], value=bt.FROZEN["lag"],
+                           help="The data starts one month before development, so 1 is the longest lag.")
+    cost = st.slider("Trading cost (% a switch)", min_value=0.0, max_value=1.0,
+                     value=bt.FROZEN["cost"], step=0.05)
 
 # ---------------------------------------------------------------- inputs as loaded
 if upload is None:
@@ -42,7 +50,7 @@ else:
         st.error(f"Could not read {upload.name}: {err}. Expected monthly prices: a header row "
                  "'date,TICKER1,TICKER2,...', then one row per month, oldest first, prices only.")
         st.stop()
-    loaded_eligible = [False] * len(names)
+    loaded_eligible = [n.upper() in RESERVE_TICKERS for n in names]  # ticked by default; untick to test
 
 try:
     p.validate_correlation(corr, len(names))
@@ -94,3 +102,48 @@ if now and as_loaded:
     st.caption(f"Largest change is in {names[i]}. Both answers use the same objective, "
                "reserve minimum and reserve ticks; only the estimates differ. "
                "Mixes are searched in 5-point steps.")
+
+
+# ---------------------------------------------------------------- signal backtest (backtest.py)
+st.header("Signal backtest: the frozen rule and its holdout")
+st.caption("Rule card: rule-card.md. The locked result uses the frozen lag and cost; "
+           "the sidebar controls run a sensitivity scenario and never change the locked evidence.")
+
+
+def backtest_table(res):
+    return {"Period": ["Development", "Holdout"],
+            **{col: [f"{res[k][key]:.2f}" if key != "switches" else str(res[k][key])
+                     for k in ("Development", "Holdout")]
+               for col, key in (("Rule gross (%)", "gross"), ("Rule net (%)", "net"),
+                                ("Buy-and-hold (%)", "buy_and_hold"), ("Switches", "switches"))}}
+
+
+locked = bt.run(**bt.FROZEN)
+left, right = st.columns(2)
+with left:
+    st.subheader(f"Locked: lag {bt.FROZEN['lag']}, cost {bt.FROZEN['cost']:.2f}%")
+    a, b_ = st.columns(2)
+    a.metric("Holdout gross", f"{locked['Holdout']['gross']:.2f}%")
+    b_.metric("Holdout net", f"{locked['Holdout']['net']:.2f}%")
+    st.table(backtest_table(locked))
+    gap = locked["Holdout"]["buy_and_hold"] - locked["Holdout"]["net"]
+    if locked["failure"]:
+        st.error(f"Failure rule triggered: holdout net trails buy-and-hold by {gap:.2f} points.")
+    else:
+        st.success("Failure rule not triggered.")
+with right:
+    st.subheader(f"Sensitivity: lag {lag}, cost {cost:.2f}%")
+    try:
+        scen = bt.run(lag=lag, cost=cost)
+    except ValueError as err:
+        st.error(f"Cannot run: {err}")
+    else:
+        a, b_ = st.columns(2)
+        a.metric("Holdout gross", f"{scen['Holdout']['gross']:.2f}%",
+                 f"{scen['Holdout']['gross'] - locked['Holdout']['gross']:+.2f} vs locked", delta_color="off")
+        b_.metric("Holdout net", f"{scen['Holdout']['net']:.2f}%",
+                  f"{scen['Holdout']['net'] - locked['Holdout']['net']:+.2f} vs locked", delta_color="off")
+        st.table(backtest_table(scen))
+        st.write("Failure rule: **" + ("triggered" if scen["failure"] else "not triggered") + "**")
+        if lag == 0:
+            st.warning("Lag 0 trades on a signal it could not have had yet: this is the leak, not evidence.")

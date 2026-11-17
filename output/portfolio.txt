@@ -1,0 +1,36 @@
+$ python3 portfolio.py
+Objective return: 6.50%
+
+Benchmark 40/60
+  Treasury bills                 0.0%
+  Treasury 10-year note          0.0%
+  Investment-grade bond fund    40.0%
+  Global equity index fund      60.0%
+  Weights total                100.0%
+  Expected return     6.80%
+  Volatility         10.46%
+  Reserve-eligible     0.0%  (bills + 10-year note)
+  Meets 6.5% objective: yes
+
+Equal weight
+  Treasury bills                25.0%
+  Treasury 10-year note         25.0%
+  Investment-grade bond fund    25.0%
+  Global equity index fund      25.0%
+  Weights total                100.0%
+  Expected return     5.20%
+  Volatility          5.21%
+  Reserve-eligible    50.0%  (bills + 10-year note)
+  Meets 6.5% objective: no
+
+Inverse volatility
+  Treasury bills                84.3%
+  Treasury 10-year note          6.0%
+  Investment-grade bond fund     7.0%
+  Global equity index fund       2.6%
+  Weights total                100.0%
+  Expected return     3.77%
+  Volatility          1.05%
+  Reserve-eligible    90.3%  (bills + 10-year note)
+  Meets 6.5% objective: no
+
