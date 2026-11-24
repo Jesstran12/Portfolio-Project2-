@@ -1,0 +1,985 @@
+{
+  "as_of": "2026-09-30",
+  "client": "Riverbend Scholarship Reserve (hypothetical client)",
+  "inputs": {
+    "prices": {
+      "file": "prices.csv",
+      "source": "Yahoo Finance, monthly Adj Close",
+      "downloaded": "2026-10-22",
+      "sha256": "faf79f81f20fd6402ba912ad4720ad326448f0afd2938f2913d4ce004d8a75c6",
+      "window": "2021-12 to 2026-09 (58 months)",
+      "monthly_returns": 58,
+      "rows_excluded_as_partial": [
+        "2026-10-01"
+      ]
+    },
+    "dgs10": {
+      "file": "data/dgs10.csv",
+      "source": "FRED series DGS10",
+      "downloaded": "2026-11-23",
+      "sha256": "33c01d81e35bf600fbc7013dfeb306e18884a58b2ce051044588e3a552ced452"
+    },
+    "dgs10_vintage": {
+      "file": "data/dgs10_vintage_2026-09-30.csv",
+      "source": "ALFRED, DGS10 as known on 2026-09-30",
+      "sha256": "1a349724d34851b5fb338ef8fa6bb3a9267a625657bde11d89bf5308c6210d0d"
+    }
+  },
+  "mandate": {
+    "rules": {
+      "objective": 6.5,
+      "reserve_min": 4.0,
+      "equity_max": 70.0,
+      "loss_limit": 10.0
+    },
+    "spending_rate": 4.0,
+    "inflation_assumption": 2.5,
+    "benchmark": {
+      "BIL": 0,
+      "IEF": 20,
+      "LQD": 20,
+      "VTI": 40,
+      "VXUS": 20
+    },
+    "grid_step": 5,
+    "stability_limit": 10.0,
+    "turnover_budget": 25.0,
+    "trade_cost": 0.1
+  },
+  "estimates": {
+    "BIL": {
+      "return": 3.73,
+      "volatility": 0.47
+    },
+    "IEF": {
+      "return": -1.98,
+      "volatility": 7.76
+    },
+    "LQD": {
+      "return": -0.92,
+      "volatility": 9.95
+    },
+    "VTI": {
+      "return": 12.51,
+      "volatility": 15.97
+    },
+    "VXUS": {
+      "return": 10.75,
+      "volatility": 15.22
+    }
+  },
+  "correlation": {
+    "BIL": {
+      "BIL": 1.0,
+      "IEF": 0.25,
+      "LQD": 0.29,
+      "VTI": 0.24,
+      "VXUS": 0.21
+    },
+    "IEF": {
+      "BIL": 0.25,
+      "IEF": 1.0,
+      "LQD": 0.94,
+      "VTI": 0.56,
+      "VXUS": 0.72
+    },
+    "LQD": {
+      "BIL": 0.29,
+      "IEF": 0.94,
+      "LQD": 1.0,
+      "VTI": 0.73,
+      "VXUS": 0.83
+    },
+    "VTI": {
+      "BIL": 0.24,
+      "IEF": 0.56,
+      "LQD": 0.73,
+      "VTI": 1.0,
+      "VXUS": 0.8
+    },
+    "VXUS": {
+      "BIL": 0.21,
+      "IEF": 0.72,
+      "LQD": 0.83,
+      "VTI": 0.8,
+      "VXUS": 1.0
+    }
+  },
+  "portfolios": {
+    "Benchmark 60/40": {
+      "weights": {
+        "BIL": 0.0,
+        "IEF": 20.0,
+        "LQD": 20.0,
+        "VTI": 40.0,
+        "VXUS": 20.0
+      },
+      "return": 6.57,
+      "volatility": 11.83,
+      "loss_95": 12.88,
+      "worst_12m": -17.37,
+      "reserve": 20.0,
+      "equity": 60.0,
+      "verdict": "FAIL: M6, M7",
+      "checks": [
+        {
+          "rule": "M1",
+          "test": "Weights sum to 100%",
+          "measured": 100.0,
+          "passed": true
+        },
+        {
+          "rule": "M2",
+          "test": "Long-only: lowest weight >= 0%",
+          "measured": 0.0,
+          "passed": true
+        },
+        {
+          "rule": "M3",
+          "test": "Reserve (BIL + IEF) >= 4.0%",
+          "measured": 20.0,
+          "passed": true
+        },
+        {
+          "rule": "M4",
+          "test": "Equity (VTI + VXUS) <= 70%",
+          "measured": 60.0,
+          "passed": true
+        },
+        {
+          "rule": "M5",
+          "test": "Return estimate >= 6.5% objective",
+          "measured": 6.57,
+          "passed": true
+        },
+        {
+          "rule": "M6",
+          "test": "One-year 95% loss estimate <= 10%",
+          "measured": 12.88,
+          "passed": false
+        },
+        {
+          "rule": "M7",
+          "test": "Worst 12-month return in the sample >= -10%",
+          "measured": -17.37,
+          "passed": false
+        }
+      ]
+    },
+    "Equal weight": {
+      "weights": {
+        "BIL": 20.0,
+        "IEF": 20.0,
+        "LQD": 20.0,
+        "VTI": 20.0,
+        "VXUS": 20.0
+      },
+      "return": 4.82,
+      "volatility": 8.91,
+      "loss_95": 9.84,
+      "worst_12m": -13.36,
+      "reserve": 40.0,
+      "equity": 40.0,
+      "verdict": "FAIL: M5, M7",
+      "checks": [
+        {
+          "rule": "M1",
+          "test": "Weights sum to 100%",
+          "measured": 100.0,
+          "passed": true
+        },
+        {
+          "rule": "M2",
+          "test": "Long-only: lowest weight >= 0%",
+          "measured": 20.0,
+          "passed": true
+        },
+        {
+          "rule": "M3",
+          "test": "Reserve (BIL + IEF) >= 4.0%",
+          "measured": 40.0,
+          "passed": true
+        },
+        {
+          "rule": "M4",
+          "test": "Equity (VTI + VXUS) <= 70%",
+          "measured": 40.0,
+          "passed": true
+        },
+        {
+          "rule": "M5",
+          "test": "Return estimate >= 6.5% objective",
+          "measured": 4.82,
+          "passed": false
+        },
+        {
+          "rule": "M6",
+          "test": "One-year 95% loss estimate <= 10%",
+          "measured": 9.84,
+          "passed": true
+        },
+        {
+          "rule": "M7",
+          "test": "Worst 12-month return in the sample >= -10%",
+          "measured": -13.36,
+          "passed": false
+        }
+      ]
+    },
+    "Inverse volatility": {
+      "weights": {
+        "BIL": 85.57,
+        "IEF": 5.2,
+        "LQD": 4.05,
+        "VTI": 2.53,
+        "VXUS": 2.65
+      },
+      "return": 3.65,
+      "volatility": 1.62,
+      "loss_95": -0.98,
+      "worst_12m": -1.29,
+      "reserve": 90.77,
+      "equity": 5.18,
+      "verdict": "FAIL: M5",
+      "checks": [
+        {
+          "rule": "M1",
+          "test": "Weights sum to 100%",
+          "measured": 100.0,
+          "passed": true
+        },
+        {
+          "rule": "M2",
+          "test": "Long-only: lowest weight >= 0%",
+          "measured": 2.53,
+          "passed": true
+        },
+        {
+          "rule": "M3",
+          "test": "Reserve (BIL + IEF) >= 4.0%",
+          "measured": 90.77,
+          "passed": true
+        },
+        {
+          "rule": "M4",
+          "test": "Equity (VTI + VXUS) <= 70%",
+          "measured": 5.18,
+          "passed": true
+        },
+        {
+          "rule": "M5",
+          "test": "Return estimate >= 6.5% objective",
+          "measured": 3.65,
+          "passed": false
+        },
+        {
+          "rule": "M6",
+          "test": "One-year 95% loss estimate <= 10%",
+          "measured": -0.98,
+          "passed": true
+        },
+        {
+          "rule": "M7",
+          "test": "Worst 12-month return in the sample >= -10%",
+          "measured": -1.29,
+          "passed": true
+        }
+      ]
+    },
+    "Constrained portfolio": {
+      "weights": {
+        "BIL": 65.0,
+        "IEF": 0.0,
+        "LQD": 0.0,
+        "VTI": 20.0,
+        "VXUS": 15.0
+      },
+      "return": 6.54,
+      "volatility": 5.29,
+      "loss_95": 2.16,
+      "worst_12m": -5.33,
+      "reserve": 65.0,
+      "equity": 35.0,
+      "verdict": "PASS",
+      "checks": [
+        {
+          "rule": "M1",
+          "test": "Weights sum to 100%",
+          "measured": 100.0,
+          "passed": true
+        },
+        {
+          "rule": "M2",
+          "test": "Long-only: lowest weight >= 0%",
+          "measured": 0.0,
+          "passed": true
+        },
+        {
+          "rule": "M3",
+          "test": "Reserve (BIL + IEF) >= 4.0%",
+          "measured": 65.0,
+          "passed": true
+        },
+        {
+          "rule": "M4",
+          "test": "Equity (VTI + VXUS) <= 70%",
+          "measured": 35.0,
+          "passed": true
+        },
+        {
+          "rule": "M5",
+          "test": "Return estimate >= 6.5% objective",
+          "measured": 6.54,
+          "passed": true
+        },
+        {
+          "rule": "M6",
+          "test": "One-year 95% loss estimate <= 10%",
+          "measured": 2.16,
+          "passed": true
+        },
+        {
+          "rule": "M7",
+          "test": "Worst 12-month return in the sample >= -10%",
+          "measured": -5.33,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "bridge": [
+    {
+      "fund": "BIL",
+      "from": 0.0,
+      "to": 65.0,
+      "change": 65.0,
+      "return_added": 2.42,
+      "risk_added": 0.09
+    },
+    {
+      "fund": "IEF",
+      "from": 20.0,
+      "to": 0.0,
+      "change": -20.0,
+      "return_added": 0.4,
+      "risk_added": -1.21
+    },
+    {
+      "fund": "LQD",
+      "from": 20.0,
+      "to": 0.0,
+      "change": -20.0,
+      "return_added": 0.18,
+      "risk_added": -1.79
+    },
+    {
+      "fund": "VTI",
+      "from": 40.0,
+      "to": 20.0,
+      "change": -20.0,
+      "return_added": -2.5,
+      "risk_added": -2.94
+    },
+    {
+      "fund": "VXUS",
+      "from": 20.0,
+      "to": 15.0,
+      "change": -5.0,
+      "return_added": -0.54,
+      "risk_added": -0.7
+    }
+  ],
+  "bridge_total": {
+    "return_added": -0.04,
+    "risk_added": -6.54
+  },
+  "turnover": {
+    "from_benchmark": 65.0,
+    "cost_from_benchmark": 0.13,
+    "yearly_rebalance": [
+      2.89,
+      1.23,
+      4.12,
+      3.0
+    ]
+  },
+  "stress": [
+    {
+      "group": "base",
+      "change": "Base case",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 20,
+        "VXUS": 15
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "BIL return +1 point",
+      "weights": {
+        "BIL": 75,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 20,
+        "VXUS": 5
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "BIL return -1 point",
+      "weights": {
+        "BIL": 60,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 35,
+        "VXUS": 5
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "IEF return +1 point",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 20,
+        "VXUS": 15
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "IEF return -1 point",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 20,
+        "VXUS": 15
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "LQD return +1 point",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 20,
+        "VXUS": 15
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "LQD return -1 point",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 20,
+        "VXUS": 15
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "VTI return +1 point",
+      "weights": {
+        "BIL": 70,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 25,
+        "VXUS": 5
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "VTI return -1 point",
+      "weights": {
+        "BIL": 60,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 15,
+        "VXUS": 25
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "VXUS return +1 point",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 15,
+        "VXUS": 20
+      }
+    },
+    {
+      "group": "estimates",
+      "change": "VXUS return -1 point",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 25,
+        "VXUS": 10
+      }
+    },
+    {
+      "group": "window",
+      "change": "Last 36 months",
+      "weights": {
+        "BIL": 85,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 5,
+        "VXUS": 10
+      }
+    },
+    {
+      "group": "window",
+      "change": "First 36 months",
+      "weights": {
+        "BIL": 60,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 40,
+        "VXUS": 0
+      }
+    },
+    {
+      "group": "window",
+      "change": "All 59 months, partial month included",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 30,
+        "VXUS": 5
+      }
+    },
+    {
+      "group": "costs",
+      "change": "All-in cost drag 0.10% a year",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 25,
+        "VXUS": 10
+      }
+    },
+    {
+      "group": "costs",
+      "change": "All-in cost drag 0.25% a year",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 35,
+        "VXUS": 0
+      }
+    },
+    {
+      "group": "constraints",
+      "change": "Objective 6.0%",
+      "weights": {
+        "BIL": 70,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 10,
+        "VXUS": 20
+      }
+    },
+    {
+      "group": "constraints",
+      "change": "Objective 7.0%",
+      "weights": {
+        "BIL": 60,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 30,
+        "VXUS": 10
+      }
+    },
+    {
+      "group": "constraints",
+      "change": "Reserve minimum 10%",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 20,
+        "VXUS": 15
+      }
+    },
+    {
+      "group": "constraints",
+      "change": "Equity cap 50%",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 20,
+        "VXUS": 15
+      }
+    },
+    {
+      "group": "constraints",
+      "change": "Loss limit 5%",
+      "weights": null
+    },
+    {
+      "group": "constraints",
+      "change": "Loss limit 15%",
+      "weights": {
+        "BIL": 65,
+        "IEF": 0,
+        "LQD": 0,
+        "VTI": 20,
+        "VXUS": 15
+      }
+    }
+  ],
+  "allocation_range": {
+    "BIL": {
+      "low": 60,
+      "high": 85
+    },
+    "IEF": {
+      "low": 0,
+      "high": 0
+    },
+    "LQD": {
+      "low": 0,
+      "high": 0
+    },
+    "VTI": {
+      "low": 5,
+      "high": 40
+    },
+    "VXUS": {
+      "low": 0,
+      "high": 25
+    },
+    "Equity (VTI + VXUS)": {
+      "low": 15,
+      "high": 40
+    }
+  },
+  "largest_move": {
+    "points": 20,
+    "fund": "BIL",
+    "run": "Last 36 months"
+  },
+  "scenarios": [
+    {
+      "name": "2022 rate shock replayed",
+      "detail": "Each fund's actual 2022 return: BIL +1.4%, IEF -15.2%, LQD -17.9%, VTI -19.5%, VXUS -16.1%",
+      "unit": "12-month return %",
+      "results": {
+        "Benchmark 60/40": -17.37,
+        "Equal weight": -13.36,
+        "Inverse volatility": -1.29,
+        "Constrained portfolio": -5.33
+      }
+    },
+    {
+      "name": "Equity drawdown (hypothetical)",
+      "detail": "One-off shock: BIL +0%, IEF +5%, LQD -5%, VTI -30%, VXUS -30%",
+      "unit": "return %",
+      "results": {
+        "Benchmark 60/40": -18.0,
+        "Equal weight": -12.0,
+        "Inverse volatility": -1.5,
+        "Constrained portfolio": -10.5
+      }
+    },
+    {
+      "name": "Stock-bond correlation at +0.80",
+      "detail": "Every bond-equity correlation raised to at least +0.80; returns and volatilities unchanged",
+      "unit": "one-year 95% loss estimate %",
+      "results": {
+        "Benchmark 60/40": 13.39,
+        "Equal weight": 10.21,
+        "Inverse volatility": -0.92,
+        "Constrained portfolio": 2.16
+      }
+    }
+  ],
+  "out_of_sample": {
+    "estimation": "2021-12 to 2024-11 (36 months)",
+    "holding": "2024-12 to 2026-09 (22 months)",
+    "feasible": true,
+    "results": {
+      "Constrained portfolio (estimated on the early window)": {
+        "weights": [
+          60.0,
+          0.0,
+          0.0,
+          40.0,
+          0.0
+        ],
+        "months": 22,
+        "total_return": 15.52,
+        "annual_return": 8.19,
+        "volatility": 5.15,
+        "max_drawdown": -2.78
+      },
+      "Benchmark 60/40": {
+        "weights": [
+          0.0,
+          20.0,
+          20.0,
+          40.0,
+          20.0
+        ],
+        "months": 22,
+        "total_return": 19.69,
+        "annual_return": 10.3,
+        "volatility": 8.18,
+        "max_drawdown": -4.46
+      },
+      "Equal weight": {
+        "weights": [
+          20.0,
+          20.0,
+          20.0,
+          20.0,
+          20.0
+        ],
+        "months": 22,
+        "total_return": 15.57,
+        "annual_return": 8.22,
+        "volatility": 5.91,
+        "max_drawdown": -3.4
+      },
+      "Inverse volatility": {
+        "weights": [
+          84.5,
+          5.6,
+          4.2,
+          2.8,
+          3.0
+        ],
+        "months": 22,
+        "total_return": 8.29,
+        "annual_return": 4.44,
+        "volatility": 1.01,
+        "max_drawdown": -0.35
+      }
+    }
+  },
+  "stops": [
+    {
+      "id": "STOP-1",
+      "kind": "stop",
+      "condition": "No mix on the grid passes every mandate rule on the current estimates",
+      "value": "a mix passes",
+      "fired": false
+    },
+    {
+      "id": "STOP-2",
+      "kind": "stop",
+      "condition": "The held portfolio's trailing 12-month return is below -10%",
+      "value": "+8.30%",
+      "fired": false
+    },
+    {
+      "id": "GATE-1",
+      "kind": "adopt gate",
+      "condition": "No weight moves more than 10 points anywhere in the stress run",
+      "value": "20 points (BIL, Last 36 months)",
+      "fired": true
+    },
+    {
+      "id": "GATE-2",
+      "kind": "adopt gate",
+      "condition": "Every stress run still finds a mix that passes the mandate",
+      "value": "no mix under: Loss limit 5%",
+      "fired": true
+    },
+    {
+      "id": "SIGNAL",
+      "kind": "signal failure rule",
+      "condition": "The signal rule's holdout net return trails buy-and-hold",
+      "value": "trails",
+      "fired": true
+    }
+  ],
+  "process_status": "PILOT (adoption gates not met)",
+  "monitoring": [
+    {
+      "trigger": "Trailing 12-month return",
+      "fires when": "below -10% (stop)",
+      "now": "+8.30%",
+      "fired": false
+    },
+    {
+      "trigger": "Trailing 12-month return, early warning",
+      "fires when": "below -5% (review)",
+      "now": "+8.30%",
+      "fired": false
+    },
+    {
+      "trigger": "BIL return estimate",
+      "fires when": "one point below the value at approval (re-run)",
+      "now": "3.73%",
+      "fired": false
+    },
+    {
+      "trigger": "Equity weight (VTI + VXUS)",
+      "fires when": "outside 15% to 40% (rebalance)",
+      "now": "35%",
+      "fired": false
+    },
+    {
+      "trigger": "Worst 12 months in the sample at current weights",
+      "fires when": "below -8% (review)",
+      "now": "-5.33%",
+      "fired": false
+    },
+    {
+      "trigger": "Largest yearly rebalance, one-way",
+      "fires when": "above 25% (review)",
+      "now": "4.1%",
+      "fired": false
+    }
+  ],
+  "grid_check": {
+    "fine_step": 2.5,
+    "coarse_weights": [
+      65.0,
+      0.0,
+      0.0,
+      20.0,
+      15.0
+    ],
+    "fine_weights": [
+      67.5,
+      0.0,
+      0.0,
+      30.0,
+      2.5
+    ],
+    "coarse_volatility": 5.29,
+    "fine_volatility": 5.18,
+    "largest_weight_gap": 12.5
+  },
+  "bootstrap": {
+    "runs": 300,
+    "seed": 43900,
+    "feasible": 227,
+    "weights": {
+      "BIL": {
+        "p05": 50,
+        "median": 75,
+        "p95": 85
+      },
+      "IEF": {
+        "p05": 0,
+        "median": 0,
+        "p95": 0
+      },
+      "LQD": {
+        "p05": 0,
+        "median": 0,
+        "p95": 0
+      },
+      "VTI": {
+        "p05": 0,
+        "median": 15,
+        "p95": 40
+      },
+      "VXUS": {
+        "p05": 0,
+        "median": 10,
+        "p95": 40
+      },
+      "Equity (VTI + VXUS)": {
+        "p05": 15,
+        "median": 25,
+        "p95": 50
+      }
+    },
+    "infeasible_share": 24.33
+  },
+  "signal": {
+    "rule": "DGS10 fell over the month -> hold IEF next month, else BIL",
+    "lag": 1,
+    "cost": 0.1,
+    "development_period": [
+      "2021-12",
+      "2024-12"
+    ],
+    "holdout_period": [
+      "2025-01",
+      "2026-09"
+    ],
+    "development": {
+      "gross": -3.33,
+      "net": -5.16,
+      "buy_and_hold": -13.08,
+      "safe_only": 11.95,
+      "switches": 19,
+      "months": 37,
+      "months_in_risk": 16
+    },
+    "holdout": {
+      "gross": 3.25,
+      "net": 2.12,
+      "buy_and_hold": 3.02,
+      "safe_only": 6.92,
+      "switches": 11,
+      "months": 21,
+      "months_in_risk": 11
+    },
+    "failure_rule_triggered": true,
+    "holdout_gap": 0.91,
+    "lag_0_leak": {
+      "development_net": 45.86,
+      "holdout_net": 16.38
+    },
+    "placebo": {
+      "runs": 1000,
+      "seed": 43900,
+      "actual": 2.12,
+      "median": 4.1,
+      "p05": -1.6,
+      "p95": 9.87,
+      "share_at_least_actual": 69.4
+    },
+    "cost_sensitivity": [
+      {
+        "cost": 0.0,
+        "holdout_net": 3.25,
+        "development_net": -3.33,
+        "failure_rule_triggered": false
+      },
+      {
+        "cost": 0.1,
+        "holdout_net": 2.12,
+        "development_net": -5.16,
+        "failure_rule_triggered": true
+      },
+      {
+        "cost": 0.25,
+        "holdout_net": 0.44,
+        "development_net": -7.84,
+        "failure_rule_triggered": true
+      }
+    ],
+    "revision_check": {
+      "vintage_last_date": "2026-09-29",
+      "shared_dates": 1268,
+      "revised": 0,
+      "missing_today": 0,
+      "new_since": 35
+    },
+    "last_signal_used": {
+      "month": "2026-08",
+      "known_value": 4.73,
+      "known_date": "2026-08-28"
+    }
+  }
+}

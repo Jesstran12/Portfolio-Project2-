@@ -1,0 +1,22 @@
+name: cold run
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Install the pinned requirements
+        run: pip install -r requirements.txt
+      - name: Run the tests
+        run: python -m pytest -q
+      - name: Regenerate the visible output
+        run: python make_output.py
+      - name: The committed output must be what the code produces
+        run: git diff --exit-code output/

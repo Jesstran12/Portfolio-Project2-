@@ -51,9 +51,12 @@ this, today's data is the as-of data, apart from that one-day lag. PAYEMS is the
 
 | Date | App (today's data) | FRED page | Match? |
 | --- | ---: | ---: | --- |
-| 2026-10-01 | 5.24 | | |
-| 2026-10-15 | 5.10 | | |
-| 2026-10-28 | 5.05 | | |
+| 2026-10-01 | 5.24 | 5.24 | yes |
+| 2026-10-15 | 5.10 | 5.10 | yes |
+| 2026-10-28 | 5.05 | 5.05 | yes |
+
+FRED column read from the series' CSV download on 2026-11-23 (`data/dgs10.csv`), by the AI
+assistant; a test in `tests/` repeats the comparison.
 
 ## May Project 2 use it?
 
