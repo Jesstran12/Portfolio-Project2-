@@ -81,9 +81,9 @@ test also checks that the limits in `docs/mandate.md` and in `client_mandate.py`
   FRED CSV, matching the Lab 17 readings.
 - **The leak, shown as a leak.** With lag 0 the rule uses the month's own yield change: holdout
   net 16.38% against 2.12% for the honest rule. The app labels it a leak.
-- **Rule frozen first.** `rule-card-dgs10.md` and `signal_rule.py` were committed in `42b8b8a`
-  (2026-11-23 09:25 −0600) after being run only on made-up data. The first run on real data came
-  after that commit, and the result was recorded in `b87e553`.
+- **Rule card.** `rule-card-dgs10.md` sets the rule, lag, cost and failure rule. It was
+  committed in `e965644` together with the result, so this repository's history does not show
+  that the card came before the run.
 - **The older training rule.** `rule-card.md` was committed after `backtest.py` was written, so
   its commit time does not prove that rule came first. It is not part of this decision.
 - **Prices.** A month-end close is known at the close. The October 2026 row is a partial month
@@ -196,7 +196,7 @@ The small gap is monthly rebalancing against a single yearly sum. The check pass
 ## 10. Locked Changed-Input Record
 
 > **Note from the build session (not part of the record).** The prediction below was drafted in
-> commit `33319b3`, before the decision signal moved from the training rule in `backtest.py` to
+> commit `97aa33f`, before the decision signal moved from the training rule in `backtest.py` to
 > the DGS10 rule in `signal_rule.py`. `backtest.py` is unchanged, so the prediction can still be
 > run as written. The student kept the prediction as drafted and ran `backtest.py`, so this
 > record tests the training rule and not the DGS10 rule the decision rests on. No AI session
@@ -210,7 +210,7 @@ The small gap is monthly rebalancing against a single yearly sum. The check pass
 | New value (units) | 0.50% per switch |
 | Expected direction of the output | Cost changes only the gap between gross and net. Gross returns and switch counts stay the same, because the position depends only on the signal. Net falls in both periods, more in the holdout, because it has 6 switches against 4. Holdout net goes further below −6.09%. Buy-and-hold has no switches, so it stays at −2.09%. |
 | Expected decision effect | As the rule is already triggered in our baseline model, it will be triggered regardless. Decision: no change; a higher cost strengthens the case to stop. |
-| Prediction commit (link and time) | <https://github.com/Jesstran12/Portfolio-Project2-/commit/33319b3>, 2026-11-23 09:03 −0600 |
+| Prediction commit (link and time) | <https://github.com/Jesstran12/Portfolio-Project2-/commit/97aa33f>, 2026-11-17 17:19 −0500 |
 | Actual output, before → after | Run by the student with `python3 backtest.py`, changing only `COST`. **Before (0.10%):** development gross 6.55, net 6.13, buy-and-hold 5.33, 4 switches; holdout gross −5.52, net −6.09, buy-and-hold −2.09, 6 switches; failure rule TRIGGERED (4.00 points). **After (0.50%):** development gross 6.55, net 4.46, buy-and-hold 5.33, 4 switches; holdout gross −5.52, net −8.35, buy-and-hold −2.09, 6 switches; failure rule TRIGGERED (6.26 points). Development net 6.13 → 4.46; holdout net −6.09 → −8.35. `COST` was set back to 0.10 after the run. |
 | Decision changes? | No. The failure rule was triggered before and is still triggered after. The holdout shortfall against buy-and-hold widened from 4.00 to 6.26 points, so the case to stop is stronger. |
 | Why it matched, or not; or why nothing changed | Every part of the prediction matched. Gross returns (6.55 and −5.52) and switch counts (4 and 6) did not move, because cost is taken off after the position is chosen. Net fell in both periods, by 1.67 points in development and 2.26 in the holdout; the holdout fell more because it has 6 switches against 4. Buy-and-hold stayed at −2.09 because it never switches. The rule stayed triggered. One thing the prediction did not mention: at 0.50% the development net (4.46) also falls below buy-and-hold (5.33), so the rule now loses in the period it was built on as well. |
@@ -219,7 +219,7 @@ The small gap is monthly rebalancing against a single yearly sum. The check pass
 
 ### AI cold run, 2026-11-23
 
-Run by the AI assistant, not by a person. Commit `20df385` was cloned into an empty folder and
+Run by the AI assistant, not by a person. The final code was cloned into an empty folder and
 only the README's commands were used.
 
 | Field | Entry |
@@ -242,10 +242,10 @@ Ubuntu machine with Python 3.14, installs `requirements.txt`, runs the tests, ru
 
 | Field | Entry |
 |---|---|
-| Command | The workflow's four steps, on commit `ede12fe` |
+| Command | The workflow's four steps, on commit `e965644` |
 | First failure | None |
-| Elapsed time | 1 minute 10 seconds |
-| Where the result is | <https://github.com/Jesstran12/Portfolio-Project2-/actions/runs/45212099828>; the badge at the top of the README shows the latest run |
+| Elapsed time | 1 minute 11 seconds |
+| Where the result is | <https://github.com/Jesstran12/Portfolio-Project2-/actions/runs/45304593014>; the badge at the top of the README shows the latest run |
 | Fix pushed (commit), or "clean, no fix needed" | Clean, no fix needed |
 
 This run was on a different operating system from the author's machine and cloned from GitHub,

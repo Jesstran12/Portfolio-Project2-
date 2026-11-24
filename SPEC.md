@@ -18,12 +18,12 @@ before ending.** Step numbers refer to section 6.
 | 2 Environment; app starts | AI | [x] | `.venv` on Python 3.14.3, pinned `requirements.txt`; `streamlit run app.py` answered health check 200 |
 | 3 Mandate written and encoded | AI, student approves | [x] | `docs/mandate.md`, `client_mandate.py` (rules M1 to M7), `process.py`, `tests/`. Base case excludes the partial October row: 65/0/0/20/15, 6.54%, 5.29%. Student approved the numbers on 2026-11-23. |
 | 4 Baselines and verdicts in the app | AI | [x] | `app.py` rewritten: five tabs, benchmark + equal weight + inverse volatility + constrained portfolio, each with a worded verdict naming the failed rules; bridge, turnover, own-weights checker; `tests/test_app.py` |
-| 5 Signal, rule card, data card | AI | [x] | `signal_rule.py`, `rule-card-dgs10.md` (frozen in `42b8b8a`, before the run), `docs/data-cards.md`. Holdout net 2.12% against hold-IEF 3.02%: failure rule triggered, signal rejected. Placebo 69.4%. |
+| 5 Signal, rule card, data card | AI | [x] | `signal_rule.py`, `rule-card-dgs10.md` (committed in `e965644` with the result), `docs/data-cards.md`. Holdout net 2.12% against hold-IEF 3.02%: failure rule triggered, signal rejected. Placebo 69.4%. |
 | 6 Stress run and stop condition | AI | [x] | Stress tab: 22 runs over estimates, window, costs, constraints; three named scenarios; out-of-sample test; STOP-1, STOP-2, GATE-1, GATE-2 evaluated (both gates fired, so pilot). `tests/test_stress.py` |
 | 7 Visible output regenerated | AI | [x] | `python3 make_output.py` writes `output/decision-report.md`, `output/decision-numbers.json` and the lab outputs; five app screenshots in `output/screenshots/`; `tests/test_output.py` fails if the committed output is stale |
 | 8 README | AI | [x] | Statements drafted (student rewords), decision frame, one command, Mermaid data flow, repository map, data sources, licensing, limitations |
 | 9 Memo and validation record | AI | [x] | Memo and record written from `output/decision-numbers.json`; `tests/test_consistency.py` fails if a quoted number is not in that file. Locked table left exactly as drafted. |
-| 10 Cold run from a fresh clone | AI | [x] | Clean: clone of `20df385`, README commands only, 33 s, 34 tests passed, regenerated output identical. Clone was local; the CI run on GitHub is the second cold run. |
+| 10 Cold run from a fresh clone | AI | [x] | Clean: clone of the final code, README commands only, 33 s, 34 tests passed, regenerated output identical. Clone was local; the CI run on GitHub is the second cold run. |
 | 11 Video scripts, timestamp index, manifest rows | AI | [x] | `docs/video-scripts.md` (three timed scripts with indexes), `docs/manifest.md` (rows and a pre-submission checklist) |
 | F Full-marks additions, tier 1 (section 8) | AI | [x] | Built inside steps 3 to 11. Not done by AI: V7 partner run, V8 (step 12b), C4 transcripts (step 12d) |
 | F Full-marks additions, tier 2 | AI | [x] | T6 CI workflow and badge (first run passed), F1 bootstrap, F2 finer-grid check, F3 monitoring triggers in the app, F4 model-risk section |
@@ -44,7 +44,7 @@ before ending.** Step numbers refer to section 6.
 | 4 Recommendation | Pilot the allocation, reject the signal; **signed off by the student on 2026-11-23** |
 | 5 One app | `app.py` is the product; the other three apps stay in place as lab files |
 
-**Locked Changed-Input Record status:** prediction drafted in commit `33319b3` (cost 0.10% →
+**Locked Changed-Input Record status:** prediction drafted in commit `97aa33f` (cost 0.10% →
 0.50%); **run done by the student on 2026-11-23** (prediction kept on `backtest.py`); output row
 filled, and the two written rows completed by the student. The record is closed. The rest of this note is history. No session may run that value or fill in the result. If step 5 changes the
 model, note it here so the student rewrites the prediction by hand before the run.
@@ -61,8 +61,8 @@ file at 0.50, and the committed stress output stops at 0.25.
 
 **Open problems and things left mid-way:**
 
-- **Pushed on 2026-11-23** (student instruction) through `ede12fe`; the first CI run passed in
-  1m10s on Ubuntu, Python 3.14. A rewritten Locked prediction must still be committed and pushed
+- **Pushed on 2026-11-23** (student instruction) through `e965644`; the first CI run passed in
+  1m11s on Ubuntu, Python 3.14. A rewritten Locked prediction must still be committed and pushed
   before its run.
 - **Locked Changed-Input:** see the note above. Decide whether to keep the drafted prediction
   (`backtest.py`) or rewrite it by hand for `signal_rule.py`.
@@ -179,7 +179,7 @@ descriptors and the plan to reach the top level on each criterion are in section
 
 ## 2. What the repository has now
 
-One commit (`33319b3`, 2026-11-23 09:03 -0600). The three script outputs in `output/` match a
+One commit (`449d699`, 2026-10-22 17:37 -0400). The three script outputs in `output/` match a
 fresh run of `backtest.py`, `portfolio.py` and `mandate.py`.
 
 | File | What it does |
@@ -259,7 +259,7 @@ it is allowed to do. The student keeps only the items a course rule reserves for
 
 | Task | Why it cannot be AI | Rough time |
 |---|---|---|
-| Locked Changed-Input prediction | Must be human-authored with AI off, committed and pushed before the run. Already drafted in commit `33319b3`; rewrite by hand only if the model changes. | 0 to 10 min |
+| Locked Changed-Input prediction | Must be human-authored with AI off, committed and pushed before the run. Already drafted in commit `97aa33f`; rewrite by hand only if the model changes. | 0 to 10 min |
 | The changed-input run and its reconciliation | "The run itself is AI closed." Student changes the value, reruns, pastes before and after output, writes whether the decision changes and why. | 10 min |
 | Recording the three videos | Webcam view is an identity and ownership check. | 13 min of video plus takes |
 | YouTube upload, Brightspace manifest and submission | Student's accounts. Also grant the instructional team repo access. | 20 min |
