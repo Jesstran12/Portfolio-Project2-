@@ -175,8 +175,8 @@ Status: pilot.
 
 Tool: **Claude Code** (Anthropic), model **Claude Fable 5.2** (`claude-fable-5-2`). Interaction
 date for the Project 2 build: **2026-11-23**. The earlier lab files were also built with AI
-help, as each one states; _the student adds the tool and dates for those_. The commit
-history from `4db960e` onward is the trace of the build session.
+help, as each one states; _the student adds the tool and dates for those_. The build
+session's work is in commit `e965644`.
 
 | # | Task given to the AI | Disposition | Independent check | Resulting decision |
 |---|---|---|---|---|
